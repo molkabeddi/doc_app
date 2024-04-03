@@ -25,6 +25,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function login(Request $request)
     {
         $request->validate([
@@ -34,15 +35,12 @@ class UsersController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect'],
-            ]);
+       if (!$user || !Hash::check($request->password, $user->password)) {
+           return response()->json(["message"=>"invalid cridentials"],400);
         }
-
-        return $user->createToken($request->email)->plainTextToken;
+       return response()->json(["token"=>$user->createToken($request->email)->plainTextToken],200);
     }
-    
+
     /**
      * register.
      *
@@ -69,7 +67,7 @@ class UsersController extends Controller
     ]);
 
     // Retourne une réponse JSON avec un code d'état 201 (Created)
-    return response()->json(['message' => 'User created'], 201);
+    return response()->json(['message' => 'User created'], 200);
 }
 
     /**
