@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\UserDetails; // Ajoutez cette ligne pour importer la classe UserDetails
+use App\Models\UserDetails;
+
+// Ajoutez cette ligne pour importer la classe UserDetails
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -35,10 +37,10 @@ class UsersController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-       if (!$user || !Hash::check($request->password, $user->password)) {
-           return response()->json(["message"=>"invalid cridentials"],400);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(["message" => "invalid cridentials"], 201);
         }
-       return response()->json(["token"=>$user->createToken($request->email)->plainTextToken],200);
+        return response()->json(["user" => $user], 200);
     }
 
     /**
@@ -47,28 +49,31 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string',
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    {
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'type' => 'user',
-        'password' => Hash::make($request->password),
-    ]);
+        $check_user = User::where('email', $request->email)->exists();
+        if ($check_user) {
+            return response()->json(['message' => "email already exists"], 201);
+        }
 
-    $userInfo = UserDetails::create([
-        'user_id' => $user->id,
-        'status' => 'active',
-    ]);
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    // Retourne une réponse JSON avec un code d'état 201 (Created)
-    return response()->json(['message' => 'User created'], 200);
-}
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'type' => 'user',
+            'password' => Hash::make($request->password),
+        ]);
+
+        $userInfo = UserDetails::create([
+            'user_id' => $user->id,
+            'status' => 'active',
+        ]);        return response()->json(['user' => $user], 200);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -83,7 +88,7 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -94,7 +99,7 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -105,7 +110,7 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -116,8 +121,8 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -128,7 +133,7 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
