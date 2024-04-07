@@ -69,10 +69,7 @@ class UsersController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $userInfo = UserDetails::create([
-            'user_id' => $user->id,
-            'status' => 'active',
-        ]);        return response()->json(['user' => $user], 200);
+       return response()->json(['user' => $user], 200);
     }
 
     /**

@@ -22,7 +22,13 @@ class BookingController extends Controller
 
     public function add_booking (Request $request)
     {
-
+        $booking = booking::create([
+            'user_id' => $request->user_id,
+            'date' => $request->date,
+            'status' => "upcoming",
+            'doctor_id' => $request->doctor_id,
+        ]);
+        return response()->json(["message"=>"Appointement has been added"],200);
     }
     public function cancel_booking($id)
     {

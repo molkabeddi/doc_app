@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()
                 ->onDelete('cascade');
-            $table->string("doctor");
+            $table->string("doctor_id");
+            $table->string("status");
             $table->dateTime("date")->format('Y-m-d H:i');
             $table->timestamps();
         });
