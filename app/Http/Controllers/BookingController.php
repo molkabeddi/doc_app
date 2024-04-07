@@ -10,11 +10,13 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index($id)
+
     {
-        //
+        $bookings=booking::where('id',$id)->get();
+        return response()->json(["data"=>$bookings],200);
     }
 
     /**

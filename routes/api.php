@@ -23,6 +23,7 @@ Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [UsersController::class, 'register']);
 
 Route::get('/my_bookings/{id}', [BookingController::class, 'index']);
+Route::get('/get_booking_by_date/{id}', [BookingController::class, 'booking_by_date']);
 Route::post('/add_booking', [BookingController::class, 'create']);
 Route::get('/cancel_booking/{id}', [BookingController::class, 'cancel']);
 Route::put('/update_booking/{id}', [BookingController::class, 'update']);
