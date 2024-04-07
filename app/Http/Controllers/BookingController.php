@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function index($id)
 
     {
@@ -19,47 +15,18 @@ class BookingController extends Controller
         return response()->json(["data"=>$bookings],200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function booking_by_date(Request $request,$id)
     {
-        //
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function add_booking (Request $request)
     {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function show(booking $booking)
-    {
-        //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\booking  $booking
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(booking $booking)
+    public function cancel_booking($id)
     {
-        //
+
     }
 
     /**
@@ -69,9 +36,9 @@ class BookingController extends Controller
      * @param  \App\Models\booking  $booking
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, booking $booking)
+    public function update_booking(Request $request,  $booking)
     {
-        //
+
     }
 
     /**
@@ -80,8 +47,19 @@ class BookingController extends Controller
      * @param  \App\Models\booking  $booking
      * @return \Illuminate\Http\Response
      */
-    public function destroy(booking $booking)
+    public function destroy($id)
     {
-        //
+        $booking=booking::find($id);
+
+        if (!$booking) {
+            return response()->json([
+                'message' => 'Booking not found'
+            ], 201);
+        }
+        $booking->delete();
+        return response()->json([
+            'message' => 'Booking has been deleted'
+        ], 200);
+
     }
 }
