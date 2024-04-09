@@ -22,10 +22,9 @@ use App\Http\Controllers\UsersController;
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [UsersController::class, 'register']);
 
-Route::get('/my_bookings/{id}', [BookingController::class, 'index']);
-Route::post('/get_booking_by_date/{id}', [BookingController::class, 'booking_by_date']);
-Route::post('/add_booking', [BookingController::class, 'add_booking']);
-Route::get('/cancel_booking/{id}', [BookingController::class, 'cancel_booking']);
-Route::put('/update_booking/{id}', [BookingController::class, 'update_booking']);
-Route::delete('/delete_booking/{id}', [BookingController::class, 'destroy']);
+Route::get('/my_bookings/{id}/{status}', [BookingController::class, 'index']);//done
+Route::post('/add_booking', [BookingController::class, 'add_booking']);//done
+Route::put('/update_status/{id}', [BookingController::class, 'update_status']); //done
+Route::put('/update_booking/{id}', [BookingController::class, 'update_booking']);//done
+Route::delete('/delete_booking/{id}', [BookingController::class, 'destroy']);//done
 

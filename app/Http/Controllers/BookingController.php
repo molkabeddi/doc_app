@@ -8,17 +8,15 @@ use Illuminate\Http\Request;
 class BookingController extends Controller
 {
 
-    public function index($id)
+    public function index($id,$status)
 
     {
-        $bookings=booking::where('id',$id)->get();
+        $bookings=booking::where('user_id',$id)->where('status',$status)->get();
         return response()->json(["data"=>$bookings],200);
     }
 
-    public function booking_by_date(Request $request,$id)
-    {
 
-    }
+
 
     public function add_booking (Request $request)
     {
@@ -30,9 +28,15 @@ class BookingController extends Controller
         ]);
         return response()->json(["message"=>"Appointement has been added"],200);
     }
-    public function cancel_booking($id)
+    public function update_status(Request $request,$id)
     {
-
+        $booking = booking::find($id);
+        $status=$booking->status;
+        $booking->status=$request->status;
+        $booking->save();
+        return response()->json([
+            'message' => 'Appointement status has been changed from '.$status .' to '.$request->status
+        ], 200);
     }
 
     /**
@@ -42,9 +46,16 @@ class BookingController extends Controller
      * @param  \App\Models\booking  $booking
      * @return \Illuminate\Http\Response
      */
-    public function update_booking(Request $request,  $booking)
+    public function update_booking(Request $request,  $id)
     {
+        $booking = booking::find($id);
 
+        $booking->date=$request->date;
+        $booking->doctor_id=$request->doctor_id;
+        $booking->save();
+        return response()->json([
+            'message' => 'Appointement hasn been updated'
+        ], 200);
     }
 
     /**
@@ -59,12 +70,12 @@ class BookingController extends Controller
 
         if (!$booking) {
             return response()->json([
-                'message' => 'Booking not found'
+                'message' => 'Appointement not found'
             ], 201);
         }
         $booking->delete();
         return response()->json([
-            'message' => 'Booking has been deleted'
+            'message' => 'Appointement has been deleted'
         ], 200);
 
     }
