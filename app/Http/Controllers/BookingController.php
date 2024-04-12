@@ -28,14 +28,14 @@ class BookingController extends Controller
         ]);
         return response()->json(["message"=>"Appointement has been added"],200);
     }
-    public function update_status(Request $request,$id)
+    public function update_status($id,$status)
     {
         $booking = booking::find($id);
-        $status=$booking->status;
-        $booking->status=$request->status;
+        $status_data=$booking->status;
+        $booking->status=$status;
         $booking->save();
         return response()->json([
-            'message' => 'Appointement status has been changed from '.$status .' to '.$request->status
+            'message' => 'Appointement status has been changed from '.$status_data .' to '.$status
         ], 200);
     }
 
@@ -51,7 +51,6 @@ class BookingController extends Controller
         $booking = booking::find($id);
 
         $booking->date=$request->date;
-        $booking->doctor_id=$request->doctor_id;
         $booking->save();
         return response()->json([
             'message' => 'Appointement hasn been updated'

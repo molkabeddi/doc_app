@@ -24,7 +24,7 @@ Route::post('/register', [UsersController::class, 'register']);
 
 Route::get('/my_bookings/{id}/{status}', [BookingController::class, 'index']);//done
 Route::post('/add_booking', [BookingController::class, 'add_booking']);//done
-Route::put('/update_status/{id}', [BookingController::class, 'update_status']); //done
-Route::put('/update_booking/{id}', [BookingController::class, 'update_booking']);//done
+Route::get('/update_status/{id}/{status}', [BookingController::class, 'update_status']);//done
+Route::put('/update_booking/{id}', [BookingController::class, 'update_booking']);
 Route::delete('/delete_booking/{id}', [BookingController::class, 'destroy']);//done
 
